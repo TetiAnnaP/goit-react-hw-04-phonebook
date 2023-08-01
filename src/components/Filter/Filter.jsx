@@ -4,7 +4,6 @@ const Filter = ({ filter, handleFilterChange }) => {
   const handleByFilter = e => {
     const value = e.target.value;
     handleFilterChange(value.trim().toLowerCase());
-    console.log(filter);
   };
 
   return (
