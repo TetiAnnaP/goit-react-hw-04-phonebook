@@ -1,25 +1,24 @@
-import { Component } from 'react';
 import css from './Fiter.module.css';
 
-export class Filter extends Component {
-  handleByFilter = e => {
+const Filter = ({ filter, handleFilterChange }) => {
+  const handleByFilter = e => {
     const value = e.target.value;
-    this.props.handleFilterChange(value.trim().toLowerCase());
-    // console.log(value);
+    handleFilterChange(value.trim().toLowerCase());
+    console.log(filter);
   };
 
-  render() {
-    return (
-      <>
-        <p>Find contact by name</p>
-        <input
-          className={css.inputName}
-          type="text"
-          name="filter"
-          value={this.props.filter}
-          onChange={this.handleByFilter}
-        />
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <p>Find contact by name</p>
+      <input
+        className={css.inputName}
+        type="text"
+        name="filter"
+        value={filter}
+        onChange={handleByFilter}
+      />
+    </>
+  );
+};
+
+export default Filter;

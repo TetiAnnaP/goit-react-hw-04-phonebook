@@ -1,45 +1,45 @@
 import { nanoid } from 'nanoid';
 import css from './ContactList.module.css';
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 
-export class ContactList extends Component {
-  handleDeleteBtn = e => {
-    this.props.handleDeleteContact(e.target.id);
+const ContactList = ({ handleDeleteContact, filter, contacts }) => {
+  const [visibleContacts, setVisibleContacts] = useState([]);
+
+  const handleDeleteBtn = e => {
+    handleDeleteContact(e.target.id);
   };
 
-  componentDidMount() {
-    localStorage.setItem('userContacts', JSON.stringify(this.props.contacts));
-  }
+  useEffect(() => {
+    localStorage.setItem('userContacts', JSON.stringify(contacts));
 
-  componentDidUpdate() {
-    localStorage.setItem('userContacts', JSON.stringify(this.props.contacts));
-  }
-
-  render() {
-    const visibleContacts = this.props.contacts.filter(contact =>
-      contact.name.toLowerCase().includes(this.props.filter)
+    const filteredContacts = contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter)
     );
 
-    return (
-      <ul className={css.ul}>
-        {visibleContacts.map(contact => {
-          return (
-            <li className={css.li} key={nanoid()}>
-              <p className={css.text}>
-                {contact.name}: {contact.number}
-              </p>
-              <button
-                className={css.sbmBtn}
-                type="button"
-                id={contact.id}
-                onClick={this.handleDeleteBtn}
-              >
-                Delete
-              </button>
-            </li>
-          );
-        })}
-      </ul>
-    );
-  }
-}
+    setVisibleContacts(filteredContacts);
+  }, [contacts, filter]);
+
+  return (
+    <ul className={css.ul}>
+      {visibleContacts.map(contact => {
+        return (
+          <li className={css.li} key={nanoid()}>
+            <p className={css.text}>
+              {contact.name}: {contact.number}
+            </p>
+            <button
+              className={css.sbmBtn}
+              type="button"
+              id={contact.id}
+              onClick={handleDeleteBtn}
+            >
+              Delete
+            </button>
+          </li>
+        );
+      })}
+    </ul>
+  );
+};
+
+export default ContactList;
